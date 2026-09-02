@@ -6,14 +6,8 @@
 
 ## 演示
 
-点击海报即可在 GitHub 内置播放器中观看演示视频：
-
 <p align="center">
-  <a href="videoSample/sample.mp4">
-    <img src="videoSample/poster.jpg" alt="TMus 演示视频" width="720">
-  </a>
-  <br>
-  <sub>▲ 点击播放：<code>videoSample/sample.mp4</code></sub>
+  <img src="videoSample/sample.gif" alt="TMus 演示" width="560">
 </p>
 
 ---
