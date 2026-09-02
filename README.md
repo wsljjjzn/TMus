@@ -7,7 +7,7 @@
 ## 演示
 
 <p align="center">
-  <img src="videoSample/sample.gif" alt="TMus 演示" width="560">
+  <img src="docs/demo.gif" alt="TMus 演示" width="560">
 </p>
 
 ---
