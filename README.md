@@ -54,3 +54,24 @@ tmus                 # 也可以 tmus ~/Music 指定目录
 | `q` | 退出 |
 
 设置自动保存到 `~/.config/tmus/config.json`，删除该文件可恢复默认。
+
+## 环境足迹（不会污染系统）
+
+- 安装 = 只往 PATH 目录放了 `tmus` 和 `ffmpeg` 两个文件（macOS `~/.local/bin/`，Windows `%LOCALAPPDATA%\tmus`）
+- 运行时只读当前文件夹；设置保存在 `~/.config/tmus/config.json`（改了才创建）
+- 解码临时文件在系统临时目录且用后即删
+- 不使用管理员权限、不写注册表/启动项、无后台进程、无自动更新
+- 想零安装：解压后直接运行（macOS 需 `chmod +x tmus`，首次右键→打开）
+
+## 彻底卸载
+
+macOS：
+
+```bash
+rm -f ~/.local/bin/tmus ~/.local/bin/ffmpeg   # 若 ffmpeg 是 Homebrew 装的，请保留并改用 brew uninstall ffmpeg
+rm -rf ~/.config/tmus                          # 删除设置
+rm -f /tmp/tmus-*.wav                          # 清理可能的解码残留
+command -v tmus                                # 应无输出 = 卸载干净
+```
+
+Windows：删除 `%LOCALAPPDATA%\tmus` 文件夹，并在“系统属性 → 环境变量 → Path”里移除该路径（或重跑 install.ps1 的卸载逻辑）。
