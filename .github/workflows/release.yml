@@ -14,13 +14,13 @@ jobs:
       matrix:
         include:
           - os: macos-14        # Apple Silicon
-            artifact: tmus-macos-arm64
+            artifact: TMus-macos-arm64
             ffasset: ffmpeg-darwin-arm64.gz
           - os: macos-13        # Intel
-            artifact: tmus-macos-x86_64
+            artifact: TMus-macos-x86_64
             ffasset: ffmpeg-darwin-x64.gz
           - os: windows-latest  # x64
-            artifact: tmus-windows-x86_64
+            artifact: TMus-windows-x86_64
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4

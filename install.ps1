@@ -26,6 +26,3 @@ Write-Host '✅ 安装完成！' -ForegroundColor Green
 Write-Host "   程序目录: $dest"
 Write-Host '   请打开新的“终端 / Windows Terminal”，进入音乐文件夹运行：'
 Write-Host '       tmus'
-Write-Host '   （可选别名，一行命令：') -NoNewline
-Write-Host ' doskey music=tmus.exe $* ' -ForegroundColor Yellow -NoNewline
-Write-Host '（仅当前 cmd 会话）'

@@ -530,7 +530,7 @@ fn ui(f: &mut Frame, app: &mut App) {
     // 标题：当前目录
     let path_line = Line::from(vec![
         Span::styled(
-            " tmus ",
+            " TMus ",
             Style::default()
                 .fg(Color::LightMagenta)
                 .add_modifier(Modifier::BOLD),
@@ -925,7 +925,7 @@ fn main() -> io::Result<()> {
     use std::io::IsTerminal;
     if !io::stdin().is_terminal() {
         eprintln!("[提示] tmus 需要在真实终端（TTY）中运行。");
-        eprintln!("       请打开“终端”或 iTerm2，进入音乐文件夹后执行 music");
+        eprintln!("       请打开“终端”或 iTerm2，进入音乐文件夹后执行 tmus");
         std::process::exit(1);
     }
 

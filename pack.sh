@@ -27,8 +27,8 @@ cp "$TMP" dist/ffmpeg
 cp README.md dist/
 cp install.ps1 dist/ 2>/dev/null || true
 
-(cd dist && zip -rq "tmus-macos-${ARCH}.zip" .)
+(cd dist && zip -rq "TMus-macos-${ARCH}.zip" .)
 rm -f "$TMP"
 
-echo "✅ 打包完成: dist/tmus-macos-${ARCH}.zip"
+echo "✅ 打包完成: dist/TMus-macos-${ARCH}.zip"
 echo "   发送给 macOS 用户：解压后运行 ./tmus（内含 ffmpeg，无需任何安装）"
