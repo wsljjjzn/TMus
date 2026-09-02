@@ -45,8 +45,8 @@ jobs:
           cp /tmp/ff-arm dist-arm/ffmpeg
           cp target/x86_64-apple-darwin/release/tmus dist-intel/tmus
           cp /tmp/ff-x64 dist-intel/ffmpeg
-          cp README.md install.sh install.ps1 dist-arm/
-          cp README.md install.sh install.ps1 dist-intel/
+          cp README.md install.sh install.ps1 uninstall.sh uninstall.ps1 dist-arm/
+          cp README.md install.sh install.ps1 uninstall.sh uninstall.ps1 dist-intel/
 
           (cd dist-arm && zip -rq ../TMus-macos-arm64.zip .)
           (cd dist-intel && zip -rq ../TMus-macos-x86_64.zip .)
@@ -64,6 +64,7 @@ jobs:
           Copy-Item $exe.FullName dist/ffmpeg.exe
           Copy-Item README.md dist/
           Copy-Item install.ps1 dist/
+          Copy-Item uninstall.ps1 dist/
           Compress-Archive -Path dist/* -DestinationPath TMus-windows-x86_64.zip
 
       - name: 上传构建产物

@@ -113,6 +113,17 @@ tmus ~/Music/某目录     # 或直接指定目录
 
 ## 卸载
 
+推荐直接用发行包里的卸载脚本（会自动探测程序位置、PATH 痕迹、配置，一键清理）：
+
+```bash
+# macOS（在解压目录）
+./uninstall.sh          # 交互确认；./uninstall.sh -y 全自动
+# Windows（在解压目录）
+powershell -ExecutionPolicy Bypass -File .\uninstall.ps1    # 或加 -Yes 免确认
+```
+
+也可手动删除：
+
 ### macOS
 
 ```bash

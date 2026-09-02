@@ -19,7 +19,7 @@ gunzip -f "$TMP.gz"; chmod +x "$TMP"
 rm -rf dist && mkdir -p dist
 cp target/release/tmus dist/
 cp "$TMP" dist/ffmpeg
-cp README.md install.sh install.ps1 dist/
+cp README.md install.sh install.ps1 uninstall.sh uninstall.ps1 dist/
 (cd dist && zip -rq "TMus-macos-${ARCH}.zip" .)
 rm -f "$TMP"
 

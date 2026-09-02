@@ -85,9 +85,24 @@ impl Default for Settings {
     }
 }
 
+/// 配置文件位置：
+/// - macOS / Linux：`~/.config/tmus/config.json`
+/// - Windows：`%APPDATA%\tmus\config.json`
 pub fn config_path() -> PathBuf {
-    let home = std::env::var("HOME").unwrap_or_else(|_| ".".into());
-    PathBuf::from(home).join(".config/tmus/config.json")
+    #[cfg(windows)]
+    {
+        let base = std::env::var("APPDATA")
+            .ok()
+            .or_else(|| std::env::var("LOCALAPPDATA").ok())
+            .or_else(|| std::env::var("USERPROFILE").ok())
+            .unwrap_or_else(|| ".".into());
+        return PathBuf::from(base).join("tmus/config.json");
+    }
+    #[cfg(not(windows))]
+    {
+        let home = std::env::var("HOME").unwrap_or_else(|_| ".".into());
+        PathBuf::from(home).join(".config/tmus/config.json")
+    }
 }
 
 pub fn parse_hex(s: &str) -> Option<(u8, u8, u8)> {
