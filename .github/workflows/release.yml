@@ -13,45 +13,50 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: macos-14        # Apple Silicon
-            artifact: TMus-macos-arm64
-            ffasset: ffmpeg-darwin-arm64.gz
-          - os: macos-13        # Intel
-            artifact: TMus-macos-x86_64
-            ffasset: ffmpeg-darwin-x64.gz
+          # Apple Silicon（原生 arm64） + Intel（交叉编译 x86_64），同一台 runner 完成
+          - os: macos-14
           - os: windows-latest  # x64
-            artifact: TMus-windows-x86_64
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-
       - uses: dtolnay/rust-toolchain@stable
 
-      - name: 编译 release
+      - name: 编译（原生）
         run: cargo build --release
 
-      # ---------- macOS：打包二进制 + 静态 ffmpeg（同目录，目标机器免安装） ----------
-      - name: 打包 macOS（含静态 ffmpeg）
-        if: startsWith(matrix.os, 'macos')
+      # ---------- macOS：原生 arm64 + 交叉 x86_64，各配静态 ffmpeg ----------
+      - name: 交叉编译 Intel 版
+        if: runner.os == 'macOS'
         run: |
-          FF_URL="https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/${{ matrix.ffasset }}"
-          curl -sL -o /tmp/ffmpeg.gz "$FF_URL"
-          gunzip -f /tmp/ffmpeg.gz
-          chmod +x /tmp/ffmpeg
-          rm -rf dist && mkdir -p dist
-          cp target/release/tmus dist/
-          cp /tmp/ffmpeg dist/ffmpeg
-          cp README.md dist/
-          cp install.ps1 dist/ 2>/dev/null || true
-          (cd dist && zip -rq "tmus-macos.zip" .)
-          mv dist/tmus-macos.zip "${{ matrix.artifact }}.zip"
+          rustup target add x86_64-apple-darwin
+          cargo build --release --target x86_64-apple-darwin
 
-      # ---------- Windows：打包 exe + 官方静态 ffmpeg.exe ----------
+      - name: 打包 macOS（arm64 + x86_64，含静态 ffmpeg）
+        if: runner.os == 'macOS'
+        run: |
+          curl -sL -o /tmp/ff-arm.gz https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffmpeg-darwin-arm64.gz
+          curl -sL -o /tmp/ff-x64.gz https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffmpeg-darwin-x64.gz
+          gunzip -f /tmp/ff-arm.gz /tmp/ff-x64.gz
+          chmod +x /tmp/ff-arm /tmp/ff-x64
+
+          rm -rf dist-arm dist-intel
+          mkdir -p dist-arm dist-intel
+          cp target/release/tmus dist-arm/tmus
+          cp /tmp/ff-arm dist-arm/ffmpeg
+          cp target/x86_64-apple-darwin/release/tmus dist-intel/tmus
+          cp /tmp/ff-x64 dist-intel/ffmpeg
+          cp README.md install.ps1 dist-arm/
+          cp README.md install.ps1 dist-intel/
+
+          (cd dist-arm && zip -rq ../TMus-macos-arm64.zip .)
+          (cd dist-intel && zip -rq ../TMus-macos-x86_64.zip .)
+
+      # ---------- Windows：exe + 官方静态 ffmpeg.exe ----------
       - name: 打包 Windows（含 ffmpeg.exe）
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          rm -rf dist; mkdir dist
+          New-Item -ItemType Directory -Path dist | Out-Null
           Copy-Item target/release/tmus.exe dist/tmus.exe
           curl.exe -L -o ffmpeg.zip https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip
           Expand-Archive ffmpeg.zip -DestinationPath ff
@@ -59,17 +64,17 @@ jobs:
           Copy-Item $exe.FullName dist/ffmpeg.exe
           Copy-Item README.md dist/
           Copy-Item install.ps1 dist/
-          Compress-Archive -Path dist/* -DestinationPath "${{ matrix.artifact }}.zip"
+          Compress-Archive -Path dist/* -DestinationPath TMus-windows-x86_64.zip
 
       - name: 上传构建产物
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact }}
-          path: ${{ matrix.artifact }}.zip
+          name: artifact-${{ matrix.os }}
+          path: TMus-*.zip
 
       # 推送 v* 标签时自动附加到 GitHub Release
       - name: 发布到 GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ matrix.artifact }}.zip
+          files: TMus-*.zip
