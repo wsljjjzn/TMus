@@ -4,6 +4,18 @@
 本地音频（mp3 / flac / wav / m4a…，含 32-bit FLAC），播放时显示实时频谱可视化
 （频谱柱 / 波形 / 环形频谱，可自定义颜色）。发行包内置静态 ffmpeg，普通用户无需额外安装。
 
+## 演示
+
+点击海报即可在 GitHub 内置播放器中观看演示视频：
+
+<p align="center">
+  <a href="videoSample/sample.mp4">
+    <img src="videoSample/poster.jpg" alt="TMus 演示视频" width="720">
+  </a>
+  <br>
+  <sub>▲ 点击播放：<code>videoSample/sample.mp4</code></sub>
+</p>
+
 ---
 
 ## 安装
