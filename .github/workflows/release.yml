@@ -45,8 +45,8 @@ jobs:
           cp /tmp/ff-arm dist-arm/ffmpeg
           cp target/x86_64-apple-darwin/release/tmus dist-intel/tmus
           cp /tmp/ff-x64 dist-intel/ffmpeg
-          cp README.md install.ps1 dist-arm/
-          cp README.md install.ps1 dist-intel/
+          cp README.md install.sh install.ps1 dist-arm/
+          cp README.md install.sh install.ps1 dist-intel/
 
           (cd dist-arm && zip -rq ../TMus-macos-arm64.zip .)
           (cd dist-intel && zip -rq ../TMus-macos-x86_64.zip .)
