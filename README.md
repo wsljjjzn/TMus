@@ -190,3 +190,9 @@ $p = [Environment]::GetEnvironmentVariable('Path','User')
 - **Windows 提示 SmartScreen**：点「更多信息 → 仍要运行」
 - **显示乱码/方块**：请用 Windows Terminal（推荐）；tmus 会自动切换 65001 代码页
 - **>90 分钟的长音频**：当前版本整曲载入内存，超长约 90 分钟会提示不支持
+
+---
+
+## 开源协议
+
+本项目基于 [MIT License](LICENSE) 开源，欢迎使用、修改与分发。
